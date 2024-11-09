@@ -19,4 +19,4 @@ jobs:
 
       - name: Run JSON Linter
         run: |
-          jsonlint $GITHUB_WORKSPACE/JSON_DetailedDataSchema_Example.json  # Lint the DataSchema.json file (replace with your actual JSON file)
+          jsonlint $GITHUB_WORKSPACE/JSON_DetailedDataSchema_Example.json
