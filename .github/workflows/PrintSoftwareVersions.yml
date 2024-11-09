@@ -1,0 +1,88 @@
+name: Print Software Versions
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  print_programming_versions:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository (if it's empty)
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
+      # Set up Node.js (for Express.js)
+      - name: Set up Node.js and install dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Install dependencies from package.json
+      - name: Install dependencies (Node.js)
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          fi
+
+      # Output the version of ExpressJS from package.json
+      - name: Print ExpressJS Version
+        run: |
+          if [ -f package.json ]; then
+            express_version=$(npm list express --depth=0 | grep express | awk -F@ '{print $2}')
+            echo "ExpressJS Version: $express_version"
+          else
+            echo "ExpressJS is not installed."
+          fi
+
+      # Set up Java and Install Kotlin
+      - name: Set up Java and Install Kotlin
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk
+          wget https://github.com/JetBrains/kotlin/releases/download/v1.9.0/kotlin-compiler-1.9.0.zip
+          unzip kotlin-compiler-1.9.0.zip
+          sudo mv kotlinc /usr/local/bin
+
+      # Output the Kotlin version
+      - name: Print Kotlin Version
+        run: |
+          kotlin_version=$(kotlinc -version)
+          echo "Kotlin Version: $kotlin_version"
+
+      # Install Android SDK & Jetpack Compose dependencies
+      - name: Install Android SDK & Jetpack Compose
+        run: |
+          sudo apt-get install -y android-sdk
+          sudo apt-get install -y gradle
+          echo "Android SDK and Jetpack Compose setup completed."
+
+      # Output Jetpack Compose version
+      - name: Print Jetpack Compose Version
+        run: |
+          compose_version=$(gradle -q dependencies --configuration compileClasspath | grep 'androidx.compose' | awk '{print $2}')
+          echo "Jetpack Compose Version: $compose_version"
+
+  print_database_versions:
+    runs-on: ubuntu-latest
+    needs: print_programming_versions
+    steps:
+      # Checkout the repository (if it's empty)
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Install PostgreSQL
+      - name: Install PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql
+
+      # Output PostgreSQL version
+      - name: Print PostgreSQL Version
+        run: |
+          postgres_version=$(psql --version)
+          echo "PostgreSQL Version: $postgres_version"
