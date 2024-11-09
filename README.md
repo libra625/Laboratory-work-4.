@@ -1,3 +1,3 @@
 # Laboratory-work-4.
 
-to test PrintSoftware
+to test linter
