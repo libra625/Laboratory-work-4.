@@ -6,10 +6,10 @@
   "properties": {
     "ПІБ": {
       "description": "прізвише ім'я та побатькові фахівця",
-      "type": "string",
+      "type": "s",
       "minLength": 1
     },
-    "кваліфікація":
+    "кваліфікація": {
       "description": "опис кваліфікації фахівця",
       "type": "string",
       "minLength": 1
