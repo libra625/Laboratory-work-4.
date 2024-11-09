@@ -15,7 +15,7 @@ jobs:
       # Checkout the repository (if it's empty)
       - name: Checkout Repository
         uses: actions/checkout@v3
-        
+
       # Set up Node.js (for Express.js)
       - name: Set up Node.js and install dependencies
         uses: actions/setup-node@v3
@@ -39,7 +39,7 @@ jobs:
             echo "ExpressJS is not installed."
           fi
 
-      # Set up Java and Install Kotlin
+      # Set up Java and Install Kotlin (if you plan to use Kotlin later)
       - name: Set up Java and Install Kotlin
         run: |
           sudo apt-get update
@@ -48,24 +48,11 @@ jobs:
           unzip kotlin-compiler-1.9.0.zip
           sudo mv kotlinc /usr/local/bin
 
-      # Output the Kotlin version
+      # Output the Kotlin version (if you need Kotlin in your project)
       - name: Print Kotlin Version
         run: |
           kotlin_version=$(kotlinc -version)
           echo "Kotlin Version: $kotlin_version"
-
-      # Install Android SDK & Jetpack Compose dependencies
-      - name: Install Android SDK & Jetpack Compose
-        run: |
-          sudo apt-get install -y android-sdk
-          sudo apt-get install -y gradle
-          echo "Android SDK and Jetpack Compose setup completed."
-
-      # Output Jetpack Compose version
-      - name: Print Jetpack Compose Version
-        run: |
-          compose_version=$(gradle -q dependencies --configuration compileClasspath | grep 'androidx.compose' | awk '{print $2}')
-          echo "Jetpack Compose Version: $compose_version"
 
   print_database_versions:
     runs-on: ubuntu-latest
